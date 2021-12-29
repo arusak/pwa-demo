@@ -1,0 +1,21 @@
+{
+  "icons": [
+    {
+      "src": "/pwa-demo/icon_512x512.e7e3cf60cf04b08cf2d63fab30d37669.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-demo/icon_192x192.07ee8c43cdc7dde1b8db40e58ee26e65.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "PWA Demo",
+  "short_name": "PWA Demo",
+  "orientation": "landscape",
+  "display": "standalone",
+  "start_url": ".",
+  "theme_color": "#282c34",
+  "background_color": "#282c34"
+}

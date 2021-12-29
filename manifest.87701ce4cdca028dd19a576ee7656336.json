@@ -13,7 +13,7 @@
   ],
   "name": "PWA Demo",
   "short_name": "PWA Demo",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "display": "standalone",
   "start_url": ".",
   "theme_color": "#282c34",

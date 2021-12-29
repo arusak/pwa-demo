@@ -1,19 +1,33 @@
 const ReplacePlugin = require('webpack-plugin-replace');
 const CracoWorkboxPlugin = require('craco-workbox');
+const PwaManifestPlugin = require('webpack-pwa-manifest');
+const { resolve } = require('path');
 
 module.exports = {
   plugins: [{
-    plugin: CracoWorkboxPlugin
+    plugin: CracoWorkboxPlugin,
   }],
   webpack: {
     plugins: {
       add: [
-        new ReplacePlugin({
-          include: /node_modules\/workbox/,
-          values: { 'process.env.NODE_ENV !== \'production\'': 'true' }
-        })
+        // new ReplacePlugin({
+        //   include: /node_modules\/?\\?workbox-.*\.js/,
+        //   values: { 'process.env.NODE_ENV !== \'production\'': 'true' }
+        // }),
+        new PwaManifestPlugin({
+          name: 'PWA Demo',
+          short_name: 'PWA Demo',
+          orientation: 'landscape',
+          theme_color: '#282c34',
+          background_color: '#282c34',
+          display: 'standalone',
+          icons: [
+            { src: resolve('./public/android-chrome-192x192.png'), type: 'image/png', size: '192x192' },
+            { src: resolve('./public/android-chrome-512x512.png'), type: 'image/png', size: '512x512' },
+          ],
+        }),
       ],
 
-    }
-  }
+    },
+  },
 };

@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import s from './TasksList.module.css';

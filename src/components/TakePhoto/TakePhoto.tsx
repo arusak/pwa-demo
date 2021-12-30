@@ -66,7 +66,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
                 track.stop();
             });
         };
-    }, [stream]);
+    }, [initStream, stream]);
 
     return (
         <div className={cn(s.wrapper)}>

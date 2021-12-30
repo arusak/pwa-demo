@@ -1,47 +1,22 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import cn from 'classnames';
 
 import s from './TasksList.module.css';
-
-type Task = {
-    'description': string;
-    'location': string;
-    'travelStart'?: string;
-    'travelEnd'?: string;
-    'workStart'?: string;
-    'workEnd'?: string;
-    'photo'?: string;
-}
+import { Task } from '../../models/Task';
+import TaskCard from '../TaskCard/TaskCard';
 
 interface IProps {
     className?: string;
+    tasks: Task[];
+    onPhotoRemove: (taskId: string, index: number) => void;
 }
 
-const TasksList: FC<IProps> = ({ className }) => {
-    const [data, setData] = useState<Task[]>([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            const response = await fetch('https://api.npoint.io/3f4c4bcb193491b0b146');
-            const json = await response.json();
-            setData(json);
-        }
-
-        fetchData();
-    }, []);
-
+const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks }) => {
     return (
         <div className={cn(s.wrapper, className)}>
             <ul>
-                {data.map(task => <li>
-                    <p><b>{task.location}</b></p>
-                    <p>{task.description}</p>
-                    <ul>
-                        <li><b>Travel started</b><span>{task.travelStart}</span></li>
-                        <li><b>Travel finished</b><span>{task.travelEnd}</span></li>
-                        <li><b>Work started</b><span>{task.workStart}</span></li>
-                        <li><b>Work finished</b><span>{task.workEnd}</span></li>
-                    </ul>
+                {tasks.map(task => <li>
+                    <TaskCard task={task} onPhotoRemove={index => onPhotoRemove(task.id, index)}/>
                 </li>)}
             </ul>
         </div>

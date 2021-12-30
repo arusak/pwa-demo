@@ -21,4 +21,11 @@ export class RemovePhotoAction {
     }
 }
 
-export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction;
+export class CompleteStepAction {
+    readonly type = 'CompleteStep';
+
+    constructor(readonly taskId: string) {
+    }
+}
+
+export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction | CompleteStepAction;

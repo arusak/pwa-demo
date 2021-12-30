@@ -70,7 +70,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
 
     return (
         <div className={cn(s.wrapper)}>
-            <video ref={videoRef} autoPlay muted playsInline/>
+            <video className={s.video} ref={videoRef} autoPlay muted playsInline/>
             <button onClick={takePhoto} disabled={!ready}>Take photo!</button>
         </div>
     );

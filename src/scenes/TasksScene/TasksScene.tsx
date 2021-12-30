@@ -5,7 +5,7 @@ import TasksList from '../../components/TasksList/TasksList';
 import TakePhoto from '../../components/TakePhoto/TakePhoto';
 import { StateContext } from '../../state/state.context';
 import { Task } from '../../models/Task';
-import { LoadTasksAction, AddPhotoAction, RemovePhotoAction } from '../../state/state.actions';
+import { LoadTasksAction, AddPhotoAction, RemovePhotoAction, CompleteStepAction } from '../../state/state.actions';
 
 interface IProps {
 }
@@ -28,7 +28,10 @@ const TasksScene: FC<IProps> = ({}) => {
     };
 
     return (<div className={s.wrapper}>
-            <TasksList tasks={tasks} onPhotoRemove={(taskId, index) => dispatch(new RemovePhotoAction(taskId, index))}/>
+            <TasksList tasks={tasks}
+                       onPhotoRemove={(taskId, index) => dispatch(new RemovePhotoAction(taskId, index))}
+                       onCompleteStep={(taskId) => dispatch(new CompleteStepAction(taskId))}
+            />
             <TakePhoto onPhoto={savePhoto}/>
         </div>
     );

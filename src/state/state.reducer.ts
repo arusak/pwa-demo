@@ -37,6 +37,28 @@ export const reducer = (state: State, action: Action): State => {
             };
         }
 
+        case 'CompleteStep': {
+            const task = state.tasks.find(t => t.id === action.taskId);
+            if (!task) {
+                return state;
+            }
+            if (task.workEnd) {
+                return state;
+            } else if (task.workStart) {
+                task.workEnd = new Date().toISOString();
+            } else if (task.travelEnd) {
+                task.workStart = new Date().toISOString();
+            } else if (task.travelStart) {
+                task.travelEnd = new Date().toISOString();
+            } else {
+                task.travelStart = new Date().toISOString();
+            }
+            return {
+                ...state,
+                tasks: [...state.tasks],
+            };
+        }
+
         default:
             return state;
     }

@@ -9,14 +9,17 @@ interface IProps {
     className?: string;
     tasks: Task[];
     onPhotoRemove: (taskId: string, index: number) => void;
+    onCompleteStep: (taskId: string) => void;
 }
 
-const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks }) => {
+const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks, onCompleteStep }) => {
     return (
         <div className={cn(s.wrapper, className)}>
             <ul>
                 {tasks.map(task => <li>
-                    <TaskCard task={task} onPhotoRemove={index => onPhotoRemove(task.id, index)}/>
+                    <TaskCard task={task}
+                              onPhotoRemove={index => onPhotoRemove(task.id, index)}
+                              onCompleteStep={() => onCompleteStep(task.id)}/>
                 </li>)}
             </ul>
         </div>

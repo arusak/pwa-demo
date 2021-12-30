@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useEffect } from 'react';
+import { FC, useRef, useState, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 
 import s from './TakePhoto.module.css';
@@ -14,7 +14,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [ready, setReady] = useState<boolean>(false);
 
-    const initStream = (async () => {
+    const initStream = useCallback(async () => {
         if (videoRef.current) {
             videoRef.current.addEventListener('loadedmetadata', () => {
                 console.log('video ready');
@@ -35,16 +35,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
             setStream(s);
             videoRef.current.srcObject = s;
         }
-    });
-
-    const destroyStream = () => {
-        if (!stream) {
-            return;
-        }
-        stream.getTracks().forEach(function (track) {
-            track.stop();
-        });
-    };
+    }, []);
 
     const takePhoto = () => {
         const video = videoRef.current;
@@ -67,9 +58,15 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
     };
 
     useEffect(() => {
-        initStream();
-        return destroyStream;
-    }, [destroyStream]);
+        if (!stream) {
+            initStream();
+        }
+        return () => {
+            stream && stream.getTracks().forEach(function (track) {
+                track.stop();
+            });
+        };
+    }, [stream]);
 
     return (
         <div className={cn(s.wrapper)}>

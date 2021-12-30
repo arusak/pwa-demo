@@ -17,7 +17,7 @@ module.exports = {
         new PwaManifestPlugin({
           name: 'PWA Demo',
           short_name: 'PWA Demo',
-          orientation: 'landscape',
+          orientation: 'portrait',
           theme_color: '#282c34',
           background_color: '#282c34',
           display: 'standalone',

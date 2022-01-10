@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import cn from 'classnames';
 
 import s from './TasksList.module.css';
@@ -9,29 +9,32 @@ import TakePhoto from '../TakePhoto/TakePhoto';
 interface IProps {
     className?: string;
     tasks: Task[];
-    onPhotoAdd: (taskId: string, data: string) => void;
-    onPhotoRemove: (taskId: string, index: number) => void;
-    onCompleteStep: (taskId: string) => void;
-    onTaskReset: (taskId: string) => void;
+    onPhotoAdd: (task: Task, data: string) => void;
+    onPhotoRemove: (task: Task, index: number) => void;
+    onCompleteStep: (task: Task) => void;
+    onTaskReset: (task: Task) => void;
 }
 
 const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks, onCompleteStep, onPhotoAdd, onTaskReset }) => {
-    const [photoTaskId, setPhotoTaskId] = useState<string | null>(null);
+    const [photoTask, setPhotoTask] = useState<Task | null>(null);
+
+    console.log(tasks);
 
     return (
         <div className={cn(s.wrapper, className)}>
             <ul>
                 {tasks.map(task => <li>
-                    <TaskCard task={task}
-                              onPhotoRemove={index => onPhotoRemove(task.id, index)}
-                              onPhotoAddStart={() => setPhotoTaskId(task.id)}
-                              onCompleteStep={() => onCompleteStep(task.id)}
-                              onReset={() => onTaskReset(task.id)}/>
+                    <TaskCard key={task._id}
+                              task={task}
+                              onPhotoRemove={index => onPhotoRemove(task, index)}
+                              onPhotoAddStart={() => setPhotoTask(task)}
+                              onCompleteStep={() => onCompleteStep(task)}
+                              onReset={() => onTaskReset(task)}/>
                 </li>)}
             </ul>
-            {photoTaskId && <TakePhoto onCancel={() => setPhotoTaskId(null)} onPhoto={(data) => {
-                onPhotoAdd(photoTaskId, data);
-                setPhotoTaskId(null);
+            {photoTask && <TakePhoto onCancel={() => setPhotoTask(null)} onPhoto={(data) => {
+                onPhotoAdd(photoTask, data);
+                setPhotoTask(null);
             }}/>}
         </div>
     );

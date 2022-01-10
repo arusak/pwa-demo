@@ -7,6 +7,13 @@ export class LoadTasksAction {
     }
 }
 
+export class UpdateTaskAction {
+    readonly type = 'UpdateTask';
+
+    constructor(readonly task: Task) {
+    }
+}
+
 export class AddPhotoAction {
     readonly type = 'AddPhoto';
 
@@ -35,4 +42,4 @@ export class ResetTaskAction {
     }
 }
 
-export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction | CompleteStepAction | ResetTaskAction;
+export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction | CompleteStepAction | ResetTaskAction | UpdateTaskAction;

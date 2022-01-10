@@ -51,8 +51,8 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, 
             </div>
             <div className={s.photos}>
                 {task.photos && task.photos.map((photo, idx) =>
-                    <div className={s.photo} onClick={() => onPhotoRemove(idx)}>
-                        <img src={photo}/>
+                    <div key={idx} className={s.photo} onClick={() => onPhotoRemove(idx)}>
+                        <img alt="" src={photo}/>
                         <span className={s.remove}>×</span>
                     </div>,
                 )}

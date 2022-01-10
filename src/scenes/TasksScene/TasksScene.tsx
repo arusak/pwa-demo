@@ -1,16 +1,11 @@
-import React, { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 
 import s from './TasksScene.module.css';
 import TasksList from '../../components/TasksList/TasksList';
 import { StateContext } from '../../state/state.context';
 import { Task } from '../../models/Task';
-import {
-    LoadTasksAction,
-    AddPhotoAction,
-    RemovePhotoAction,
-    CompleteStepAction,
-    ResetTaskAction,
-} from '../../state/state.actions';
+import { LoadTasksAction, UpdateTaskAction } from '../../state/state.actions';
+import { fetchTasks, updateTask } from '../../services/data.service';
 
 interface IProps {
 }
@@ -19,25 +14,60 @@ const TasksScene: FC<IProps> = () => {
     const [{ tasks }, dispatch] = useContext(StateContext);
 
     useEffect(() => {
-        async function fetchData() {
-            const response = await fetch('https://api.npoint.io/3f4c4bcb193491b0b146');
-            const tasks: Task[] = await response.json();
-            dispatch(new LoadTasksAction(tasks));
-        }
-
-        fetchData();
+        fetchTasks().then(tasks => dispatch(new LoadTasksAction(tasks)));
     }, [dispatch]);
 
-    const savePhoto = (taskId: string, dataUrl: string) => {
-        dispatch(new AddPhotoAction(taskId, dataUrl));
+    const savePhoto = (task: Task, dataUrl: string) => {
+        const photos = task.photos || [];
+        const updated = { ...task, photos: [...photos, dataUrl] };
+        updateTask(updated);
+        dispatch(new UpdateTaskAction(updated));
+
+    };
+
+    const removePhoto = (task: Task, index: number) => {
+        const photos = [...task.photos];
+        const updated = { ...task, photos: photos.splice(index, 1) };
+        updateTask(updated);
+        dispatch(new UpdateTaskAction(updated));
+    };
+
+    const stepTask = (task: Task) => {
+        const updated = {
+            ...task,
+        };
+        if (updated.workEnd) {
+        } else if (updated.workStart) {
+            updated.workEnd = new Date().toISOString();
+        } else if (updated.travelEnd) {
+            updated.workStart = new Date().toISOString();
+        } else if (updated.travelStart) {
+            updated.travelEnd = new Date().toISOString();
+        } else {
+            updated.travelStart = new Date().toISOString();
+        }
+        updateTask(updated);
+        dispatch(new UpdateTaskAction(updated));
+    };
+
+    const resetTask = (task: Task) => {
+        const updated = {
+            ...task,
+            workEnd: undefined,
+            workStart: undefined,
+            travelEnd: undefined,
+            travelStart: undefined,
+        };
+        updateTask(updated);
+        dispatch(new UpdateTaskAction(updated));
     };
 
     return (<div className={s.wrapper}>
             <TasksList tasks={tasks}
-                       onPhotoRemove={(taskId, index) => dispatch(new RemovePhotoAction(taskId, index))}
+                       onPhotoRemove={removePhoto}
                        onPhotoAdd={savePhoto}
-                       onCompleteStep={(taskId) => dispatch(new CompleteStepAction(taskId))}
-                       onTaskReset={(taskId) => dispatch(new ResetTaskAction(taskId))}
+                       onCompleteStep={stepTask}
+                       onTaskReset={resetTask}
             />
         </div>
     );

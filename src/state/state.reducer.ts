@@ -1,5 +1,5 @@
 import { Task } from '../models/Task';
-import { Action } from './state.actions';
+import { Action, ResetTaskAction } from './state.actions';
 
 export type State = {
     tasks: Task[];
@@ -53,6 +53,23 @@ export const reducer = (state: State, action: Action): State => {
             } else {
                 task.travelStart = new Date().toISOString();
             }
+            return {
+                ...state,
+                tasks: [...state.tasks],
+            };
+        }
+
+        case 'ResetTask': {
+            const task = state.tasks.find(t => t.id === action.taskId);
+            if (!task) {
+                return state;
+            }
+
+            task.workEnd = undefined;
+            task.workStart = undefined;
+            task.travelEnd = undefined;
+            task.travelStart = undefined;
+
             return {
                 ...state,
                 tasks: [...state.tasks],

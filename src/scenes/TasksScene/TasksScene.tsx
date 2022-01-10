@@ -2,15 +2,20 @@ import React, { FC, useContext, useEffect } from 'react';
 
 import s from './TasksScene.module.css';
 import TasksList from '../../components/TasksList/TasksList';
-import TakePhoto from '../../components/TakePhoto/TakePhoto';
 import { StateContext } from '../../state/state.context';
 import { Task } from '../../models/Task';
-import { LoadTasksAction, AddPhotoAction, RemovePhotoAction, CompleteStepAction } from '../../state/state.actions';
+import {
+    LoadTasksAction,
+    AddPhotoAction,
+    RemovePhotoAction,
+    CompleteStepAction,
+    ResetTaskAction,
+} from '../../state/state.actions';
 
 interface IProps {
 }
 
-const TasksScene: FC<IProps> = ({}) => {
+const TasksScene: FC<IProps> = () => {
     const [{ tasks }, dispatch] = useContext(StateContext);
 
     useEffect(() => {
@@ -23,16 +28,17 @@ const TasksScene: FC<IProps> = ({}) => {
         fetchData();
     }, [dispatch]);
 
-    const savePhoto = (dataUrl: string) => {
-        dispatch(new AddPhotoAction('one', dataUrl));
+    const savePhoto = (taskId: string, dataUrl: string) => {
+        dispatch(new AddPhotoAction(taskId, dataUrl));
     };
 
     return (<div className={s.wrapper}>
             <TasksList tasks={tasks}
                        onPhotoRemove={(taskId, index) => dispatch(new RemovePhotoAction(taskId, index))}
+                       onPhotoAdd={savePhoto}
                        onCompleteStep={(taskId) => dispatch(new CompleteStepAction(taskId))}
+                       onTaskReset={(taskId) => dispatch(new ResetTaskAction(taskId))}
             />
-            <TakePhoto onPhoto={savePhoto}/>
         </div>
     );
 };

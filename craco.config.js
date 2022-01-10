@@ -1,9 +1,15 @@
+const {POSTCSS_MODES} = require('@craco/craco');
 const ReplacePlugin = require('webpack-plugin-replace');
 const CracoWorkboxPlugin = require('craco-workbox');
 const PwaManifestPlugin = require('webpack-pwa-manifest');
 const { resolve } = require('path');
 
 module.exports = {
+  style: {
+    postcss: {
+      mode: POSTCSS_MODES.file
+    }
+  },
   plugins: [{
     plugin: CracoWorkboxPlugin,
   }],

@@ -10,16 +10,18 @@ interface IProps {
     task: Task;
     onPhotoRemove: (idx: number) => void;
     onCompleteStep: () => void;
+    onReset: () => void;
+    onPhotoAddStart: () => void;
 }
 
-const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep }) => {
+const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, onPhotoAddStart, onReset }) => {
     return (
         <div className={cn(s.wrapper, className)}>
             <header>
                 <p><b>{task.location}</b></p>
                 <p>{task.description}</p>
             </header>
-            <div className={s.tasks}>
+            <div className={s.milestones}>
                 <ul>
                     <li className={cn(s.milestone, task.travelStart && s.complete)}>
                         <b>Travel started </b>
@@ -38,20 +40,22 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep }
                         <span>{formatTime(task.workEnd)}</span>
                     </li>
                 </ul>
-                <div className={s.button}>
-                    <button className={s.completeButton} onClick={onCompleteStep} disabled={!!task.workEnd} />
+                <div className={s.buttons}>
+                    <button className={s.completeButton} onClick={onCompleteStep} disabled={!!task.workEnd}>▶</button>
+                    <button className={s.resetButton} onClick={onReset}>Reset</button>
                 </div>
             </div>
-            {task.photos &&
-                <div className={s.photos}>
-                    {task.photos.map((photo, idx) =>
-                        <div className={s.photo} onClick={() => onPhotoRemove(idx)}>
-                            <img width={100} src={photo}/>
-                            <span className={s.remove}>×</span>
-                        </div>,
-                    )}
+            <div className={s.photos}>
+                {task.photos && task.photos.map((photo, idx) =>
+                    <div className={s.photo} onClick={() => onPhotoRemove(idx)}>
+                        <img src={photo}/>
+                        <span className={s.remove}>×</span>
+                    </div>,
+                )}
+                <div className={s.addPhoto} onClick={onPhotoAddStart}>
+                    +
                 </div>
-            }
+            </div>
         </div>
     );
 };

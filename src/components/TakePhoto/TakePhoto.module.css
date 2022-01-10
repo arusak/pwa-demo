@@ -1,3 +1,26 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0A0A0A;
+}
+
 .video {
   width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 3rem;
+  padding: 1rem;
+}
+
+.backButton {
+  margin: 0 1rem 0 0;
+}
+.takePhotoButton {
 }

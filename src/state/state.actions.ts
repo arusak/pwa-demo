@@ -28,4 +28,11 @@ export class CompleteStepAction {
     }
 }
 
-export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction | CompleteStepAction;
+export class ResetTaskAction {
+    readonly type = 'ResetTask';
+
+    constructor(readonly taskId: string) {
+    }
+}
+
+export type Action = LoadTasksAction | AddPhotoAction | RemovePhotoAction | CompleteStepAction | ResetTaskAction;

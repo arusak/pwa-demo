@@ -6,9 +6,10 @@ import s from './TakePhoto.module.css';
 interface IProps {
     className?: string;
     onPhoto: (dataUrl: string) => void;
+    onCancel: () => void;
 }
 
-const TakePhoto: FC<IProps> = ({ onPhoto }) => {
+const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const [stream, setStream] = useState<MediaStream | null>(null);
@@ -71,7 +72,10 @@ const TakePhoto: FC<IProps> = ({ onPhoto }) => {
     return (
         <div className={cn(s.wrapper)}>
             <video className={s.video} ref={videoRef} autoPlay muted playsInline/>
-            <button onClick={takePhoto} disabled={!ready}>Take photo!</button>
+            <div className={s.buttons}>
+                <button className={s.backButton} onClick={onCancel} disabled={!ready}>Back</button>
+                <button className={s.takePhotoButton} onClick={takePhoto} disabled={!ready}>Take photo!</button>
+            </div>
         </div>
     );
 };

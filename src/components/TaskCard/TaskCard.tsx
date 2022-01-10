@@ -18,8 +18,8 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, 
     return (
         <div className={cn(s.wrapper, className)}>
             <header>
-                <p><b>{task.location}</b></p>
-                <p>{task.description}</p>
+                <div><b>{task.location}</b></div>
+                <div>{task.description}</div>
             </header>
             <div className={s.milestones}>
                 <ul>
@@ -27,18 +27,22 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, 
                         <b>Travel started </b>
                         <span>{formatTime(task.travelStart)}</span>
                     </li>
-                    <li className={cn(s.milestone, task.travelEnd && s.complete)}>
-                        <b>Travel finished </b>
-                        <span>{formatTime(task.travelEnd)}</span>
-                    </li>
+                    {task.travelStart && <li className={cn(s.milestone, task.travelEnd && s.complete)}>
+                      <b>Travel finished </b>
+                      <span>{formatTime(task.travelEnd)}</span>
+                    </li>}
+                    {task.travelEnd &&
                     <li className={cn(s.milestone, task.workStart && s.complete)}>
-                        <b>Work started </b>
-                        <span>{formatTime(task.workStart)}</span>
+                      <b>Work started </b>
+                      <span>{formatTime(task.workStart)}</span>
                     </li>
+                    }
+                    {task.workStart &&
                     <li className={cn(s.milestone, task.workEnd && s.complete)}>
-                        <b>Work finished </b>
-                        <span>{formatTime(task.workEnd)}</span>
+                      <b>Work finished </b>
+                      <span>{formatTime(task.workEnd)}</span>
                     </li>
+                    }
                 </ul>
                 <div className={s.buttons}>
                     <button className={s.completeButton} onClick={onCompleteStep} disabled={!!task.workEnd}>▶</button>
@@ -53,7 +57,7 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, 
                     </div>,
                 )}
                 <div className={s.addPhoto} onClick={onPhotoAddStart}>
-                    +
+                    📷
                 </div>
             </div>
         </div>

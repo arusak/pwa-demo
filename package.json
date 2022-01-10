@@ -65,5 +65,9 @@
     "postcss-loader": "^4.3.0",
     "postcss-nested": "^4.2.3",
     "postcss-preset-env": "^6.7.0"
+  },
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.22.0"
   }
 }

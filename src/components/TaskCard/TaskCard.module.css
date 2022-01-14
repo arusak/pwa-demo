@@ -54,9 +54,6 @@
 }
 
 .photos {
-  display: flex;
-  align-items: stretch;
-  height: 5rem;
 }
 
 .photo {
@@ -64,7 +61,7 @@
   display: inline-block;
 
   & img {
-    height: 100%;
+    height: 5rem;
   }
 }
 
@@ -75,7 +72,9 @@
   justify-content: center;
   font-size: 2rem;
   width: 5rem;
+  height: 5rem;
   background: #292929;
+  vertical-align: top;
 
   &:hover {
     background: #3b3b3b;

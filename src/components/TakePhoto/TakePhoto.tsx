@@ -13,7 +13,8 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const [stream, setStream] = useState<MediaStream | null>(null);
-    const [ready, setReady] = useState<boolean>(false);
+    const [isVideoReady, setReady] = useState<boolean>(false);
+    const [capabilities, setCapabilities] = useState<MediaTrackCapabilities | null>(null);
 
     const initStream = useCallback(async () => {
         if (videoRef.current) {
@@ -59,22 +60,59 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
     };
 
     useEffect(() => {
+        const video = videoRef.current;
         if (!stream) {
             initStream();
         }
         return () => {
+            video && video.pause();
             stream && stream.getTracks().forEach(function (track) {
                 track.stop();
             });
         };
     }, [initStream, stream]);
 
+    const handleTorchClick = useCallback((isTorchOn) => {
+        const tracks = stream?.getVideoTracks();
+        const videoTrack = tracks && tracks[0];
+        console.log('videoTrack: ', videoTrack);
+        console.log('isVideoReady: ', isVideoReady);
+        if (videoTrack && isVideoReady) {
+            const capabilities = videoTrack.getCapabilities();
+            setCapabilities(capabilities);
+            // @ts-ignore
+            if (capabilities.torch) {
+                videoTrack.applyConstraints({
+                    // @ts-ignore
+                    advanced: [{ torch: isTorchOn }],
+                }).then(() => {
+                    console.log((`torch is ${isTorchOn ? 'on' : 'off'}`));
+                });
+            }
+            // @ts-ignore
+            else if (capabilities.flash) {
+                videoTrack.applyConstraints({
+                    // @ts-ignore
+                    advanced: [{ flash: isTorchOn }],
+                }).then(() => {
+                    console.log((`torch is ${isTorchOn ? 'on' : 'off'}`));
+                });
+            }
+        }
+    }, [isVideoReady, stream]);
+
     return (
         <div className={cn(s.wrapper)}>
             <video className={s.video} ref={videoRef} autoPlay muted playsInline/>
             <div className={s.buttons}>
-                <button className={s.backButton} onClick={onCancel} disabled={!ready}>Back</button>
-                <button className={s.takePhotoButton} onClick={takePhoto} disabled={!ready}>Take photo!</button>
+                <button className={s.backButton} onClick={onCancel} disabled={!isVideoReady}>Back</button>
+                <button className={s.takePhotoButton} onClick={takePhoto} disabled={!isVideoReady}>Take photo!</button>
+                <button className={s.torchButton} onClick={() => handleTorchClick(true)}
+                        disabled={!isVideoReady}>Flash
+                </button>
+            </div>
+            <div style={{fontSize: "10px"}}>
+                {JSON.stringify(capabilities)}
             </div>
         </div>
     );

@@ -22,3 +22,13 @@ ul {
   list-style: none;
   padding: 0;
 }
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  width: .1rem;
+  height: .1rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

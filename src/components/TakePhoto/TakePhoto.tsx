@@ -2,6 +2,7 @@ import { FC, useRef, useState, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 
 import s from './TakePhoto.module.css';
+import { getWebpDataUrl } from '../../utils/image.utils';
 
 interface IProps {
     className?: string;
@@ -49,19 +50,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
         if (!video) {
             return;
         }
-        const videoCanvas = document.createElement('canvas');
-        const scaleDownFactor = 2;
-        videoCanvas.height = video.videoHeight / scaleDownFactor;
-        videoCanvas.width = video.videoWidth / scaleDownFactor;
-        const videoContext = videoCanvas.getContext('2d');
-
-        if (!videoContext) {
-            return;
-        }
-        videoContext.drawImage(video, 0, 0, video.videoWidth / scaleDownFactor, video.videoHeight / scaleDownFactor);
-
-        const dataUrl = videoCanvas.toDataURL('image/webp', 0.8);
-        onPhoto(dataUrl);
+        onPhoto(getWebpDataUrl(video));
     };
 
     useEffect(() => {

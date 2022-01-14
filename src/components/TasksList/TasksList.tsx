@@ -18,19 +18,20 @@ interface IProps {
 const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks, onCompleteStep, onPhotoAdd, onTaskReset }) => {
     const [photoTask, setPhotoTask] = useState<Task | null>(null);
 
-    console.log(tasks);
-
     return (
         <div className={cn(s.wrapper, className)}>
             <ul>
-                {tasks.map(task => <li>
-                    <TaskCard key={task._id}
-                              task={task}
-                              onPhotoRemove={index => onPhotoRemove(task, index)}
-                              onPhotoAddStart={() => setPhotoTask(task)}
-                              onCompleteStep={() => onCompleteStep(task)}
-                              onReset={() => onTaskReset(task)}/>
-                </li>)}
+                {tasks.map(task =>
+                    <li key={task._id}>
+                        <TaskCard
+                            task={task}
+                            onPhotoRemove={index => onPhotoRemove(task, index)}
+                            onPhotoCaptureStart={() => setPhotoTask(task)}
+                            onImageAdded={data => onPhotoAdd(task, data)}
+                            onCompleteStep={() => onCompleteStep(task)}
+                            onReset={() => onTaskReset(task)}/>
+                    </li>,
+                )}
             </ul>
             {photoTask && <TakePhoto onCancel={() => setPhotoTask(null)} onPhoto={(data) => {
                 onPhotoAdd(photoTask, data);

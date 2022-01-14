@@ -4,6 +4,7 @@ import cn from 'classnames';
 import s from './TaskCard.module.css';
 import { Task } from '../../models/Task';
 import { formatTime } from '../../utils/date.utils';
+import { getWebpDataUrl, getImageFromFile } from '../../utils/image.utils';
 
 interface IProps {
     className?: string;
@@ -11,10 +12,20 @@ interface IProps {
     onPhotoRemove: (idx: number) => void;
     onCompleteStep: () => void;
     onReset: () => void;
-    onPhotoAddStart: () => void;
+    onPhotoCaptureStart: () => void;
+    onImageAdded: (dataUrl: string) => void;
 }
 
-const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, onPhotoAddStart, onReset }) => {
+const TaskCard: FC<IProps> = (props) => {
+    const {
+        className,
+        task,
+        onPhotoRemove,
+        onCompleteStep,
+        onPhotoCaptureStart,
+        onReset,
+        onImageAdded,
+    } = props;
     return (
         <div className={cn(s.wrapper, className)}>
             <header>
@@ -56,9 +67,21 @@ const TaskCard: FC<IProps> = ({ className, task, onPhotoRemove, onCompleteStep, 
                         <span className={s.remove}>×</span>
                     </div>,
                 )}
-                <div className={s.addPhoto} onClick={onPhotoAddStart}>
+                <div className={s.addPhoto} onClick={onPhotoCaptureStart}>
                     📷
                 </div>
+                <label className={s.addPhoto}>
+                    📎
+                    <input className="visually-hidden" type="file" accept="image/*" capture="environment"
+                           onChange={async evt => {
+                               const file = evt.target.files && evt.target.files[0];
+                               if (file) {
+                                   const image = await getImageFromFile(file);
+                                   const dataUrl = getWebpDataUrl(image);
+                                   onImageAdded(dataUrl);
+                               }
+                           }}/>
+                </label>
             </div>
         </div>
     );

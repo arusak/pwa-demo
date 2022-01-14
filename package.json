@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "cross-env REACT_APP_VERSION=$npm_package_version craco build",
     "test": "craco test",
     "eject": "craco eject",
     "predeploy": "cross-env PUBLIC_URL=/pwa-demo yarn run build",
@@ -60,11 +60,11 @@
     "@craco/craco": "^6.4.3",
     "cross-env": "^7.0.3",
     "gh-pages": "^3.2.3",
-    "webpack-pwa-manifest": "^4.3.0",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-loader": "^4.3.0",
     "postcss-nested": "^4.2.3",
-    "postcss-preset-env": "^6.7.0"
+    "postcss-preset-env": "^6.7.0",
+    "webpack-pwa-manifest": "^4.3.0"
   },
   "engines": {
     "npm": "please-use-yarn",

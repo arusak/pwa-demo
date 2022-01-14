@@ -14,7 +14,9 @@ import { NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
-console.info(`Running ${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`);
+const version =process.env.REACT_APP_VERSION;
+
+console.info(`Running version ${version}`);
 
 clientsClaim();
 

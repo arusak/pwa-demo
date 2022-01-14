@@ -14,13 +14,18 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
 
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isVideoReady, setReady] = useState<boolean>(false);
-    const [capabilities, setCapabilities] = useState<MediaTrackCapabilities | null>(null);
+    const [capabilities, setCapabilities] = useState<MediaTrackCapabilities | undefined>(undefined);
 
     const initStream = useCallback(async () => {
         if (videoRef.current) {
             videoRef.current.addEventListener('loadedmetadata', () => {
                 console.log('video ready');
+                const capabilities = stream?.getVideoTracks()[0].getCapabilities();
+                setCapabilities(capabilities);
                 setReady(true);
+            });
+            videoRef.current.addEventListener('loadeddata', () => {
+                videoRef.current && videoRef.current.play();
             });
             videoRef.current.addEventListener('ended', () => {
                 console.log('stream ended');
@@ -37,7 +42,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
             setStream(s);
             videoRef.current.srcObject = s;
         }
-    }, []);
+    }, [stream]);
 
     const takePhoto = () => {
         const video = videoRef.current;
@@ -75,11 +80,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
     const handleTorchClick = useCallback((isTorchOn) => {
         const tracks = stream?.getVideoTracks();
         const videoTrack = tracks && tracks[0];
-        console.log('videoTrack: ', videoTrack);
-        console.log('isVideoReady: ', isVideoReady);
         if (videoTrack && isVideoReady) {
-            const capabilities = videoTrack.getCapabilities();
-            setCapabilities(capabilities);
             // @ts-ignore
             if (capabilities.torch) {
                 videoTrack.applyConstraints({
@@ -103,7 +104,7 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
 
     return (
         <div className={cn(s.wrapper)}>
-            <video className={s.video} ref={videoRef} autoPlay muted playsInline/>
+            <video className={s.video} ref={videoRef} muted playsInline/>
             <div className={s.buttons}>
                 <button className={s.backButton} onClick={onCancel} disabled={!isVideoReady}>Back</button>
                 <button className={s.takePhotoButton} onClick={takePhoto} disabled={!isVideoReady}>Take photo!</button>

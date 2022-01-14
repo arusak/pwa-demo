@@ -90,29 +90,20 @@ const TakePhoto: FC<IProps> = ({ onPhoto, onCancel }) => {
                     console.log((`torch is ${isTorchOn ? 'on' : 'off'}`));
                 });
             }
-            // @ts-ignore
-            else if (capabilities.flash) {
-                videoTrack.applyConstraints({
-                    // @ts-ignore
-                    advanced: [{ flash: isTorchOn }],
-                }).then(() => {
-                    console.log((`torch is ${isTorchOn ? 'on' : 'off'}`));
-                });
-            }
         }
-    }, [isVideoReady, stream]);
+    }, [capabilities?.torch, isVideoReady, stream]);
 
     return (
         <div className={cn(s.wrapper)}>
             <video className={s.video} ref={videoRef} muted playsInline/>
             <div className={s.buttons}>
-                <button className={s.backButton} onClick={onCancel} disabled={!isVideoReady}>Back</button>
+                <button className={s.backButton} onClick={onCancel}>Back</button>
                 <button className={s.takePhotoButton} onClick={takePhoto} disabled={!isVideoReady}>Take photo!</button>
                 <button className={s.torchButton} onClick={() => handleTorchClick(true)}
                         disabled={!isVideoReady}>Flash
                 </button>
             </div>
-            <div style={{fontSize: "10px"}}>
+            <div style={{ fontSize: '10px' }}>
                 {JSON.stringify(capabilities)}
             </div>
         </div>

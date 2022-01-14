@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/pwa-demo/static/css/main.236d11c9.chunk.css",
-    "main.js": "/pwa-demo/static/js/main.c5634148.chunk.js",
-    "main.js.map": "/pwa-demo/static/js/main.c5634148.chunk.js.map",
+    "main.css": "/pwa-demo/static/css/main.2eac7fbd.chunk.css",
+    "main.js": "/pwa-demo/static/js/main.c9ab318c.chunk.js",
+    "main.js.map": "/pwa-demo/static/js/main.c9ab318c.chunk.js.map",
     "runtime-main.js": "/pwa-demo/static/js/runtime-main.bc300a96.js",
     "runtime-main.js.map": "/pwa-demo/static/js/runtime-main.bc300a96.js.map",
     "static/js/2.ef1123e8.chunk.js": "/pwa-demo/static/js/2.ef1123e8.chunk.js",
@@ -13,13 +13,13 @@
     "manifest.87701ce4cdca028dd19a576ee7656336.json": "/pwa-demo/manifest.87701ce4cdca028dd19a576ee7656336.json",
     "service-worker.js": "/pwa-demo/service-worker.js",
     "service-worker.js.map": "/pwa-demo/service-worker.js.map",
-    "static/css/main.236d11c9.chunk.css.map": "/pwa-demo/static/css/main.236d11c9.chunk.css.map",
+    "static/css/main.2eac7fbd.chunk.css.map": "/pwa-demo/static/css/main.2eac7fbd.chunk.css.map",
     "static/js/2.ef1123e8.chunk.js.LICENSE.txt": "/pwa-demo/static/js/2.ef1123e8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.bc300a96.js",
     "static/js/2.ef1123e8.chunk.js",
-    "static/css/main.236d11c9.chunk.css",
-    "static/js/main.c5634148.chunk.js"
+    "static/css/main.2eac7fbd.chunk.css",
+    "static/js/main.c9ab318c.chunk.js"
   ]
 }

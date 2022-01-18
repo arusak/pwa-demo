@@ -8,7 +8,7 @@ const version = process.env.REACT_APP_VERSION;
 
 const App = () => {
     const [beforeInstallEvent, setBeforeInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
-    const [isAccepted, setAccepted] = useState(true);
+    const [isAccepted, setAccepted] = useState(false);
 
     useEventListener('beforeinstallprompt', (evt: BeforeInstallPromptEvent) => {
         evt.preventDefault();
@@ -35,7 +35,8 @@ const App = () => {
             <StateProvider>
                 <TasksScene/>
             </StateProvider>
-            {version && <footer className={s.footer}>version {version}</footer>}
+
+            {version && <footer className={s.footer}>version {version} UA {navigator.userAgent}</footer>}
         </div>
     );
 };

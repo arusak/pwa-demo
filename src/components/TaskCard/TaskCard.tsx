@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, ChangeEvent } from 'react';
 import cn from 'classnames';
 
 import s from './TaskCard.module.css';
@@ -26,6 +26,15 @@ const TaskCard: FC<IProps> = (props) => {
         onReset,
         onImageAdded,
     } = props;
+
+    const handleFile = async (evt: ChangeEvent<HTMLInputElement>) => {
+        const file = evt.target.files && evt.target.files[0];
+        if (file) {
+            const image = await getImageFromFile(file);
+            const dataUrl = getWebpDataUrl(image);
+            onImageAdded(dataUrl);
+        }
+    };
     return (
         <div className={cn(s.wrapper, className)}>
             <header>
@@ -67,20 +76,20 @@ const TaskCard: FC<IProps> = (props) => {
                         <span className={s.remove}>×</span>
                     </div>,
                 )}
+            </div>
+            <div className={s.photoButtons}>
                 <div className={s.addPhoto} onClick={onPhotoCaptureStart}>
-                    📷
+                    📹
                 </div>
                 <label className={s.addPhoto}>
-                    📎
+                    📷
                     <input className="visually-hidden" type="file" accept="image/*" capture="environment"
-                           onChange={async evt => {
-                               const file = evt.target.files && evt.target.files[0];
-                               if (file) {
-                                   const image = await getImageFromFile(file);
-                                   const dataUrl = getWebpDataUrl(image);
-                                   onImageAdded(dataUrl);
-                               }
-                           }}/>
+                           onChange={handleFile}/>
+                </label>
+                <label className={s.addPhoto}>
+                    📎
+                    <input className="visually-hidden" type="file" accept="image/*"
+                           onChange={handleFile}/>
                 </label>
             </div>
         </div>

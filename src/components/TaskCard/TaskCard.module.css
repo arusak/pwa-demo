@@ -65,15 +65,26 @@
   }
 }
 
+.photoButtons {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0 0 0;
+  border-top: thin solid #111;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 0.5rem;
+  justify-content: start;
+}
+
 .addPhoto {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  width: 5rem;
-  height: 5rem;
-  background: #292929;
+  width: 4rem;
+  height: 4rem;
+  border: thin solid #292929;
+  border-radius: 0.25rem;
   vertical-align: top;
 
   &:hover {

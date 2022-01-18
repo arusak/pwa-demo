@@ -8,7 +8,7 @@ const version = process.env.REACT_APP_VERSION;
 
 const App = () => {
     const [beforeInstallEvent, setBeforeInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
-    const [isAccepted, setAccepted] = useState(false);
+    const [isAccepted, setAccepted] = useState(true);
 
     useEventListener('beforeinstallprompt', (evt: BeforeInstallPromptEvent) => {
         evt.preventDefault();
@@ -16,20 +16,22 @@ const App = () => {
     });
 
     const handleAdd = (evt: BeforeInstallPromptEvent) => () => {
-        setBeforeInstallEvent(null);
         evt.prompt();
         // Wait for the user to respond to the prompt
         evt.userChoice.then((choiceResult) => {
             setAccepted(choiceResult.outcome === 'accepted');
+            setTimeout(() => setAccepted(false), 5000);
+            setBeforeInstallEvent(null);
+
         });
     };
 
     return (
         <div className={s.wrapper}>
             {beforeInstallEvent &&
-                <button className={s.addToHome} onClick={handleAdd(beforeInstallEvent)}>Add to Home</button>
+            <button className={s.addToHome} onClick={handleAdd(beforeInstallEvent)}>Add to Home</button>
             }
-            {isAccepted && <div>Added to Home Screen</div>}
+            {isAccepted && <div className={s.accepted}>Added to Home Screen</div>}
             <StateProvider>
                 <TasksScene/>
             </StateProvider>

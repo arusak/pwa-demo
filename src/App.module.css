@@ -16,3 +16,11 @@
   text-align: center;
   pointer-events: none;
 }
+
+.addToHome {
+  width: 100%;
+  padding: 2rem;
+  background: #2e6e6c;
+  color: white;
+  border: none;
+}

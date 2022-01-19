@@ -2,39 +2,29 @@ import { FC, useState } from 'react';
 import cn from 'classnames';
 
 import s from './TasksList.module.css';
-import { Task } from '../../models/Task';
 import TaskCard from '../TaskCard/TaskCard';
 import TakePhoto from '../TakePhoto/TakePhoto';
+import { ITaskModel } from '../../models/Task';
 
 interface IProps {
     className?: string;
-    tasks: Task[];
-    onPhotoAdd: (task: Task, data: string) => void;
-    onPhotoRemove: (task: Task, index: number) => void;
-    onCompleteStep: (task: Task) => void;
-    onTaskReset: (task: Task) => void;
+    tasks: ITaskModel[];
 }
 
-const TasksList: FC<IProps> = ({ className, onPhotoRemove, tasks, onCompleteStep, onPhotoAdd, onTaskReset }) => {
-    const [photoTask, setPhotoTask] = useState<Task | null>(null);
+const TasksList: FC<IProps> = ({ className, tasks }) => {
+    const [photoTask, setPhotoTask] = useState<ITaskModel | null>(null);
 
     return (
         <div className={cn(s.wrapper, className)}>
             <ul>
                 {tasks.map(task =>
-                    <li key={task._id}>
-                        <TaskCard
-                            task={task}
-                            onPhotoRemove={index => onPhotoRemove(task, index)}
-                            onPhotoCaptureStart={() => setPhotoTask(task)}
-                            onImageAdded={data => onPhotoAdd(task, data)}
-                            onCompleteStep={() => onCompleteStep(task)}
-                            onReset={() => onTaskReset(task)}/>
+                    <li key={task.id}>
+                        <TaskCard task={task} onPhotoCaptureStart={() => setPhotoTask(task)}/>
                     </li>,
                 )}
             </ul>
             {photoTask && <TakePhoto onCancel={() => setPhotoTask(null)} onPhoto={(data) => {
-                onPhotoAdd(photoTask, data);
+                photoTask.addPhoto(data);
                 setPhotoTask(null);
             }}/>}
         </div>

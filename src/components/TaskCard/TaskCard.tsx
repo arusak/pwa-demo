@@ -1,30 +1,23 @@
-import { FC, memo, ChangeEvent } from 'react';
+import { FC, ChangeEvent } from 'react';
 import cn from 'classnames';
 
 import s from './TaskCard.module.css';
-import { Task } from '../../models/Task';
 import { formatTime } from '../../utils/date.utils';
 import { getWebpDataUrl, getImageFromFile } from '../../utils/image.utils';
+import { ITaskModel } from '../../models/Task';
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
     className?: string;
-    task: Task;
-    onPhotoRemove: (idx: number) => void;
-    onCompleteStep: () => void;
-    onReset: () => void;
+    task: ITaskModel;
     onPhotoCaptureStart: () => void;
-    onImageAdded: (dataUrl: string) => void;
 }
 
 const TaskCard: FC<IProps> = (props) => {
     const {
         className,
         task,
-        onPhotoRemove,
-        onCompleteStep,
         onPhotoCaptureStart,
-        onReset,
-        onImageAdded,
     } = props;
 
     const handleFile = async (evt: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +25,7 @@ const TaskCard: FC<IProps> = (props) => {
         if (file) {
             const image = await getImageFromFile(file);
             const dataUrl = getWebpDataUrl(image);
-            onImageAdded(dataUrl);
+            task.addPhoto(dataUrl);
         }
     };
     return (
@@ -65,13 +58,13 @@ const TaskCard: FC<IProps> = (props) => {
                     }
                 </ul>
                 <div className={s.buttons}>
-                    <button className={s.completeButton} onClick={onCompleteStep} disabled={!!task.workEnd}>▶</button>
-                    <button className={s.resetButton} onClick={onReset}>Reset</button>
+                    <button className={s.completeButton} onClick={()=>task.step()} disabled={!!task.workEnd}>▶</button>
+                    <button className={s.resetButton} onClick={()=>task.resetTime()}>Reset</button>
                 </div>
             </div>
             <div className={s.photos}>
                 {task.photos && task.photos.map((photo, idx) =>
-                    <div key={idx} className={s.photo} onClick={() => onPhotoRemove(idx)}>
+                    <div key={idx} className={s.photo} onClick={() => task.removePhoto(idx)}>
                         <img alt="" src={photo}/>
                         <span className={s.remove}>×</span>
                     </div>,
@@ -96,4 +89,4 @@ const TaskCard: FC<IProps> = (props) => {
     );
 };
 
-export default memo(TaskCard);
+export default observer(TaskCard);
